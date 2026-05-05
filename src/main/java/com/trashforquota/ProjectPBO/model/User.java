@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 
 @Entity
 @Table(name = "users")
-@Data // Ini magic dari Lombok: otomatis bikin Getter, Setter, toString, dll.
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -15,10 +15,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String nama;
-    
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
     @Column(name = "nomor_hp")
     private String nomorHp;
 
-    private int totalPoin;
+    private int poin;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    public enum Role {
+        ADMIN, USER
+    }
 }
