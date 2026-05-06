@@ -32,4 +32,13 @@ public class User {
     public enum Role {
         ADMIN, USER
     }
+
+    // ✅ TAMBAHAN (biar cocok dengan HTML)
+    public String getNoHp() {
+        return nomorHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.nomorHp = noHp;
+    }
 }
