@@ -18,7 +18,11 @@ public class UserService {
     public void registerUser(User user) {
         // Enkripsi password sebelum simpan ke DB
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(User.Role.USER); // Default role adalah USER
+        
+        // Default values untuk user baru
+        user.setRole(User.Role.USER); 
+        user.setPoin(0); 
+        
         userRepository.save(user);
     }
 }

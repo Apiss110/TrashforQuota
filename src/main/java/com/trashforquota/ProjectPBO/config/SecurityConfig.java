@@ -14,21 +14,25 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Keamanan password wajib di-hash
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/css/**", "/js/**").permitAll() // Halaman login & static files bebas akses
-                .requestMatchers("/admin/**").hasRole("ADMIN") // Hanya untuk Admin
-                .requestMatchers("/user/**").hasRole("USER")   // Hanya untuk User biasa
+                .requestMatchers("/login", "/register", "/css/**", "/js/**").permitAll() // /register dibuka publik
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/user/**").hasRole("USER")
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
-                .loginPage("/login") // Custom halaman login Thymeleaf kita
-                .defaultSuccessUrl("/dashboard", true) // Redirect setelah sukses login
+                .loginPage("/login")
+                .defaultSuccessUrl("/dashboard", true)
+                .failureHandler((request, response, exception) -> {
+                    System.out.println("Login Gagal: " + exception.getMessage());
+                    response.sendRedirect("/login?error=true");
+                })
                 .permitAll()
             )
             .logout(logout -> logout

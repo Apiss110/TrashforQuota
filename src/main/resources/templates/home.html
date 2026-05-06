@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard User - Trash for Quota</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container">
+            <span class="navbar-brand">Trash for Quota</span>
+            <form th:action="@{/logout}" method="post">
+                <button class="btn btn-outline-light btn-sm" type="submit">Logout</button>
+            </form>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Halo, <span th:text="${user.username}">User</span>!</h5>
+                        <p class="card-text">Saldo Poin Anda:</p>
+                        <h2 th:text="${user.poin}">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <h3>Tukar Poin Jadi Kuota/Pulsa</h3>
+                <div th:if="${message}" class="alert alert-info" th:text="${message}"></div>
+                
+                <table class="table table-striped mt-3">
+                    <thead>
+                        <tr>
+                            <th>Nama Reward</th>
+                            <th>Provider</th>
+                            <th>Harga Poin</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="r : ${rewards}">
+                            <td th:text="${r.namaReward}">Reward</td>
+                            <td th:text="${r.provider}">Provider</td>
+                            <td th:text="${r.poinDibutuhkan}">0</td>
+                            <td>
+                                <form th:action="@{'/user/tukar/' + ${r.idReward}}" method="post">
+                                    <button type="submit" class="btn btn-sm btn-primary" 
+                                            th:disabled="${user.poin < r.poinDibutuhkan}">Tukar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
