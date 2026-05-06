@@ -25,13 +25,19 @@ public class UserController {
         this.rewardService = rewardService;
     }
 
-    @GetMapping("/home")
+   @GetMapping("/home")
     public String home(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        User user = userRepository.findByUsername(userDetails.getUsername()).orElseThrow();
-        model.addAttribute("user", user);
-        model.addAttribute("rewards", rewardRepository.findAll());
-        return "user/home";
-    }
+    // Tambahin print buat debug di terminal
+    System.out.println("Login sebagai: " + userDetails.getUsername());
+    
+    User user = userRepository.findByUsername(userDetails.getUsername())
+            .orElseThrow(() -> new RuntimeException("User tidak ketemu di DB!"));
+            
+    model.addAttribute("user", user);
+    model.addAttribute("rewards", rewardRepository.findAll());
+    
+    return "home";
+}
 
     @PostMapping("/tukar/{rewardId}")
     public String tukarPoin(@AuthenticationPrincipal UserDetails userDetails, 

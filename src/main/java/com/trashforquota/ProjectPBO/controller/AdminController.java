@@ -23,6 +23,6 @@ public class AdminController {
     public String adminHome(Model model) {
         model.addAttribute("bins", smartBinRepository.findAll());
         model.addAttribute("recentTransactions", transaksiRepository.findAll());
-        return "admin/dashboard";
+        return "dashboard";
     }
 }
